@@ -119,7 +119,7 @@ class Chef
           delay_sec: 1,
           timeout_sec: 120
         ) do
-          p = shell_out("#{node['monit']['executable']} status")
+          p = shell_out("#{node['monit']['executable']} -p /var/run/monit.pid status")
           stdout_stderr_combined = "stdout:\n#{p.stdout}\nstderr:#{p.stderr}"
           if p.stderr.include?('Status not available -- the monit daemon is not running')
             # Monit might have crashed on the "monit reload" command. Restart it as a temporary
