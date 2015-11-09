@@ -20,7 +20,7 @@ action :reload_and_wait do
   script 'monit-reload' do
     interpreter 'bash'
     user 'root'
-    code "#{node['monit']['executable']} reload"
+    code "#{node['monit']['executable']} -p /var/run/monit.pid reload"
   end
 
   # The Monit daemon suddenly stops after the above reload action in some cases. We are working

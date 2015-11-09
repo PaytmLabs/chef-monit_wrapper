@@ -34,7 +34,7 @@ class Chef
                          "assuming no Monit-controlled processes are running")
           return {}
         end
-        p = shell_out("#{node['monit']['executable']} summary")
+        p = shell_out("#{node['monit']['executable']} -p /var/run/monit.pid summary")
         unless p.exitstatus == 0
           Chef::Log.fatal("Command '#{p.command}' failed with exit status #{p.exitstatus}\n" +
                           "stdout:\n#{p.stdout}\nstderr:\n#{p.stderr}")

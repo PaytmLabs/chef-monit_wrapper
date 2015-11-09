@@ -49,7 +49,7 @@ action_attempt=0
 
 while true; do
   action_attempt=$(( $action_attempt + 1 ))
-  if sudo <%= @monit_executable %> "${action}" "${service_name}" 2>&1 >/dev/null | \
+  if sudo <%= @monit_executable %> -p /var/run/monit.pid "${action}" "${service_name}" 2>&1 >/dev/null | \
       grep "Other action already in progress -- please try again later"; then
     if [ "${action_attempt}" -ge "${MAX_ACTION_ATTEMPTS}" ]; then
       echo "Not retrying to ${action} ${service_name} after ${action_attempt} attempts" >&2
@@ -74,7 +74,7 @@ set -e -o pipefail
 
 echo "Waiting for ${service_name} to ${action}"
 status_query_attempt=0
-while ! sudo <%= @monit_executable %> summary | \
+while ! sudo <%= @monit_executable %> -p /var/run/monit.pid summary | \
       egrep "${service_name}.*${expected_status}$" >/dev/null; do
   status_query_attempt=$(( $status_query_attempt + 1 ))
   if [ $status_query_attempt -gt "${MAX_STATUS_QUERY_ATTEMPTS}" ]; then
